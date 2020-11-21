@@ -1,11 +1,17 @@
 import React from 'react';
-import { Counter } from './features/counter/Counter';
+import { ThemeProvider } from '@material-ui/core';
+import theme from './app/theme';
+import TodosPage from './containers/TodosPage';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <TodosPage />
+      </div>
+    </ThemeProvider>
+
   );
 }
 
