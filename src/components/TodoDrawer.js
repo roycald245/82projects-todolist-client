@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { InputBase, makeStyles, Drawer, IconButton, Paper } from '@material-ui/core';
+import { InputBase, makeStyles, Drawer, IconButton, Paper, Button } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { ReactComponent as CheckBoxActive } from '../assets/checkbox-active.svg';
@@ -37,13 +37,34 @@ const useStyles = makeStyles((theme) => ({
   drawerBody: {
     display: 'flex',
   },
-  input: {
+  titleInput: {
     marginLeft: theme.spacing(1),
-    flex: 1,
     color: theme.palette.primary.text,
-    fontSize: '30px',
+    fontSize: '50px',
   },
-  inputPaper: {
+  descriptionInput: {
+    marginLeft: theme.spacing(1),
+    color: '#c4c4c4',
+    fontSize: '30px',
+    height: '100%',
+    width: '100%',
+  },
+  inputPaperTitle: {
+    marginTop: '15%',
+    padding: '2px 4px',
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: '#1b5294',
+    maxHeight: '60%',
+    resize: 'both',
+    width: '80%',
+    marginLeft: '10%',
+    top: '2%',
+    color: theme.palette.secondary.contrastText
+  },
+  inputPaperDescription: {
+    marginTop: '10%',
     padding: '2px 4px',
     position: 'relative',
     display: 'flex',
@@ -55,7 +76,15 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '10%',
     top: '2%'
   },
-
+  inputs: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  submit: {
+    marginTop: '20%',
+    fontSize: '80px',
+    color: '#1b5294',
+  },
 
 }))
 
@@ -77,12 +106,11 @@ const Todo = (props) => {
     >
       <div className={classes.drawerHeader}>
         <IconButton onClick={onClose}>
-          <CancelIcon />
+          <CancelIcon style={{ fontSize: '100px', color: '#1b5294', }} />
         </IconButton>
       </div>
-      {/* <div className={''}> */}
-        <Paper component="form" className={classes.inputPaper}>
-
+      <div classname={classes.inputs}>
+        <Paper component="form" className={classes.inputPaperTitle}>
 
           <InputBase
             placeholder="Title"
@@ -94,11 +122,28 @@ const Todo = (props) => {
             fullWidth
             rowsMax={5}
             dir="ltr"
-            className={classes.input}
+            className={classes.titleInput}
             defaultValue={newTitle}
           />
         </Paper>
-      {/* </div> */}
+        <Paper component="form" className={classes.inputPaperDescription}>
+
+          <InputBase
+            placeholder="Description"
+            onChange={(event) => {
+              setNewDescription(event.target.value);
+            }}
+            multiline
+            autoFocus
+            fullWidth
+            rowsMax={5}
+            dir="ltr"
+            className={classes.descriptionInput}
+            defaultValue={newDescription}
+          />
+        </Paper>
+        <Button size='large' className={classes.submit}>SUBMIT</Button>
+      </div>
     </Drawer>
   );
 }

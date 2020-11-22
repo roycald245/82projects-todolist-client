@@ -11,23 +11,26 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: '2%',
+    marginTop: '1%',
+    marginBottom: '1%',
     backgroundColor: theme.palette.secondary.main,
     borderRadius: '8px',
-    height: '40%',
-    width: '100%',
+    maxHeight: '40%',
+    width: '95%',
+    marginLeft: '2.5%',
+    border: '1px solid #ddd',
   },
   title: {
-    color: theme.palette.secondary.light,
+    color: theme.palette.secondary.contrastText,
+    position: 'relative',
   },
   description: {
     position: 'relative',
     backgroundColor: '#1b5294',
-    color: theme.palette.secondary.contrastText,
+    color: theme.palette.secondary.light,
     overflowY: 'auto',
-    height: '60%',
+    maxHeight: '60%',
     width: '100%',
-    border: '1px solid #ddd',
     borderRadius: '5px',
     textAlign: 'left',
     marginBottom: '3%',
@@ -43,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Todo = (props) => {
-  const { isComplete, title, description, editCallback, deleteCallback } = props;
+  console.log(props);
+  const { isComplete, title, description, editCallback, onDelete, onComplete } = props;
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -51,16 +55,16 @@ const Todo = (props) => {
         <Typography variant='h2'>{title}</Typography>
       </div>
       {description ? <div className={classes.description}>
-        <Typography variant='h5' style={{ whiteSpace: 'pre-line', marginLeft: '1%', marginRight: '1%' }}>
+        <Typography variant='h5' style={{ whiteSpace: 'pre-line', marginLeft: '1%', marginRight: '1%', position: 'relative' }}>
           {description}
         </Typography>
       </div> : null}
       <ButtonGroup className={classes.buttons} size="medium" color="primary">
 
-        <Button>
+        <Button onClick={onComplete}>
           {isComplete ? <CheckBoxIcon className={classes.buttonIcon} /> : <CheckBoxOutlineBlankIcon className={classes.buttonIcon} />}
         </Button>
-        <Button onClick={deleteCallback}><DeleteIcon className={classes.buttonIcon} /></Button>
+        <Button onClick={onDelete}><DeleteIcon className={classes.buttonIcon} /></Button>
         <Button onClick={editCallback}><CreateIcon className={classes.buttonIcon} /></Button>
       </ButtonGroup>
     </div>

@@ -1,6 +1,8 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core'; 
+import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import Todos from '../components/Todos';
+import { addTodo, fetchTodos, selectTodos, updateTodo, removeTodo } from '../features/todo/todoSlice';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,10 +35,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TodosPage = () => {
+  const dispatch = useDispatch();
+
+  const todos = useSelector(selectTodos);
+  console.log(todos);
+  useEffect(() => {
+    fetchTodos('http://localhost:3000/todo/')(dispatch);
+  }, [])
+
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Todos />
+      <Todos
+        todos={todos}
+        onAdd={(todo) => () => addTodo('http://localhost:3000/todo/', todo)(dispatch)}
+        onDelete={(todo) => () => removeTodo('http://localhost:3000/todo/', todo)(dispatch)}
+        onUpdate={(todo) => () => updateTodo('http://localhost:3000/todo/', todo)(dispatch)} />
     </div>
   )
 };

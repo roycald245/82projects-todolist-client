@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getTodos } from '../../api/todosAPI';
+import { deleteTodo, getTodos, postTodo, putTodo } from '../../api/todosAPI';
 
 export const todoSlice = createSlice({
   name: 'todo',
@@ -16,19 +16,7 @@ export const todoSlice = createSlice({
       state.value += 1;
     },
     setTodos: (state, action) => {
-      state.todos = action.payload;
-    },
-    appendItems: (state, action) => {
-      state.items += action.payload;
-    },
-    updateField: (state, action) => {
-      state.flags.field = action.payload;
-    },
-    toggleAggs: (state) => {
-      state.flags.aggregated = !state.flags.aggregated;
-    },
-    toggleRaw: (state) => {
-      state.flags.raw = !state.flags.raw;
+      state.todos = action.payload || [];
     },
     setError: (state, action) => {
       state.error = action.payload;
@@ -38,10 +26,6 @@ export const todoSlice = createSlice({
 
 export const {
   setTodos,
-  updateField,
-  toggleAggs,
-  toggleRaw,
-  appendItems,
   setError,
 } = todoSlice.actions;
 
@@ -55,10 +39,37 @@ export const {
 //   }, 1000);
 // };
 
-export const fetchTodos = () => async dispatch => {
+export const fetchTodos = (url) => async dispatch => {
   try {
-    const todos = await getTodos();
-    dispatch(setTodos(todos));
+    getTodos(url)
+      .then((res) => dispatch(setTodos(res.data)));
+  } catch (err) {
+    dispatch(setError(err));
+  }
+}
+
+export const addTodo = (url, todo) => async dispatch => {
+  try {
+    postTodo(url, todo).then(() => getTodos(url)
+      .then((res) => dispatch(setTodos(res.data))));
+  } catch (err) {
+    dispatch(setError(err));
+  }
+}
+
+export const updateTodo = (url, todo) => async dispatch => {
+  try {
+    putTodo(url, todo).then(() => getTodos(url)
+    .then((res) => dispatch(setTodos(res.data))));
+  } catch (err) {
+    dispatch(setError(err));
+  }
+}
+
+export const removeTodo = (url, todo) => async dispatch => {
+  try {
+    deleteTodo(url, todo).then(() => getTodos(url)
+    .then((res) => dispatch(setTodos(res.data))));
   } catch (err) {
     dispatch(setError(err));
   }
@@ -67,8 +78,6 @@ export const fetchTodos = () => async dispatch => {
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
-export const selectItems = (state) => state.todo.items;
-export const selectFlags = (state) => state.todo.flags;
-export const selectColumns = (state) => state.todo.columns;
-export const selectField = (state) => state.todo.flags.field;
+export const selectTodos = (state) => state.todo.todos;
+
 export default todoSlice.reducer;
