@@ -42,7 +42,7 @@ export const {
 export const fetchTodos = (url) => async dispatch => {
   try {
     getTodos(url)
-      .then((res) => dispatch(setTodos(res.data)));
+      .then((res) => {if (res) dispatch(setTodos(res.data))});
   } catch (err) {
     dispatch(setError(err));
   }

@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
       transform: 'translateX(-50%) scale(1.5)',
     }
   },
-}))
+}));
 
 const Todos = (props) => {
 
@@ -61,7 +61,6 @@ const Todos = (props) => {
     setDrawerContent(todo)
     setDrawerOpen(true);
   };
-
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
@@ -73,10 +72,10 @@ const Todos = (props) => {
       <Todo
         key={todo.id}
         title={todo.name}
-        editCallback={handleDrawerOpen({ id: todo.id, name: todo.name, description: todo.description, isComplete: todo.iscomplete })}
-        isComplete={todo.iscomplete}
+        editCallback={handleDrawerOpen(todo)}
+        isComplete={todo.isComplete}
         description={todo.description}
-        onComplete={onUpdate({ id: todo.id, name: todo.name, description: todo.description, isComplete: !todo.iscomplete })}
+        onComplete={onUpdate({ id: todo.id, name: todo.name, description: todo.description, isComplete: !todo.isComplete })}
         onDelete={onDelete({id: todo.id})}
       />
     )
@@ -88,8 +87,8 @@ const Todos = (props) => {
       <Paper className={drawerOpen ? classes.todosShift : classes.todos}>
         {Todos()}
       </Paper>
-      {!drawerOpen ? <IconButton onClick={handleDrawerOpen()} className={classes.plusButton} ><AddBoxIcon style={{ fontSize: '300%', }} /></IconButton> : null}
-      <TodoDrawer open={drawerOpen} onAdd={onAdd} onUpdate={onUpdate} todo={drawerContent} onClose={handleDrawerClose} />
+      {!drawerOpen ? <IconButton onClick={handleDrawerOpen({})} className={classes.plusButton} ><AddBoxIcon style={{ fontSize: '300%', }} /></IconButton> : null}
+      {drawerOpen ? <TodoDrawer open={drawerOpen} onAdd={onAdd} onUpdate={onUpdate} todo={drawerContent} onClose={handleDrawerClose} /> : null}
 
     </div>
   );

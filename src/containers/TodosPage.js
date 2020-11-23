@@ -36,9 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TodosPage = () => {
   const dispatch = useDispatch();
-
   const todos = useSelector(selectTodos);
-  console.log(todos);
   useEffect(() => {
     fetchTodos('http://localhost:3000/todo/')(dispatch);
   }, [])

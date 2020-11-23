@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { InputBase, makeStyles, Drawer, IconButton, Paper, Button } from '@material-ui/core';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { ReactComponent as CheckBoxActive } from '../assets/checkbox-active.svg';
-import { ReactComponent as CheckBoxInactive } from '../assets/checkbox-inactive.svg';
 
 const drawerWidth = '40%';
 
@@ -89,11 +86,24 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Todo = (props) => {
-  const { todo, open, onClose, onSubmit } = props;
+  const { todo, open, onClose, onAdd, onUpdate } = props;
+  const [newTodo, setNewTodo] = useState(todo);
+  console.log(todo);
+  if (newTodo === {}) {
+    setNewTodo({ name: '', description: '' });
+  }
 
-  const [newTitle, setNewTitle] = useState(todo ? todo.name : 'Todo title');
-  const [newDescription, setNewDescription] = useState(todo ? todo.description : 'description');
-  const [newStatus, setNewStatus] = useState(todo ? todo.isComplete : false);
+  const submitHandler = () => {
+    if ('id' in newTodo) {
+      onUpdate(newTodo)();
+      onClose();
+    } else {
+      console.log(newTodo);
+      onAdd(newTodo)();
+      onClose();
+    }
+    
+  };
 
   const classes = useStyles();
   return (
@@ -109,13 +119,15 @@ const Todo = (props) => {
           <CancelIcon style={{ fontSize: '100px', color: '#1b5294', }} />
         </IconButton>
       </div>
-      <div classname={classes.inputs}>
+      <div className={classes.inputs}>
         <Paper component="form" className={classes.inputPaperTitle}>
 
           <InputBase
             placeholder="Title"
             onChange={(event) => {
-              setNewTitle(event.target.value);
+              let updatedTodo = { ...newTodo };
+              updatedTodo.name = event.target.value;
+              setNewTodo(updatedTodo);
             }}
             multiline
             autoFocus
@@ -123,7 +135,7 @@ const Todo = (props) => {
             rowsMax={5}
             dir="ltr"
             className={classes.titleInput}
-            defaultValue={newTitle}
+            defaultValue={newTodo.name}
           />
         </Paper>
         <Paper component="form" className={classes.inputPaperDescription}>
@@ -131,18 +143,19 @@ const Todo = (props) => {
           <InputBase
             placeholder="Description"
             onChange={(event) => {
-              setNewDescription(event.target.value);
+              let updatedTodo = { ...newTodo };
+              updatedTodo.description = event.target.value;
+              setNewTodo(updatedTodo);
             }}
             multiline
-            autoFocus
             fullWidth
             rowsMax={5}
             dir="ltr"
             className={classes.descriptionInput}
-            defaultValue={newDescription}
+            defaultValue={newTodo.description}
           />
         </Paper>
-        <Button size='large' className={classes.submit}>SUBMIT</Button>
+        <Button onClick={submitHandler} size='large' className={classes.submit}>SUBMIT</Button>
       </div>
     </Drawer>
   );

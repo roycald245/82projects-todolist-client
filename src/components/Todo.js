@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Todo = (props) => {
-  console.log(props);
   const { isComplete, title, description, editCallback, onDelete, onComplete } = props;
   const classes = useStyles();
   return (
