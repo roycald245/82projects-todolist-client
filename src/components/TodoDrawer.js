@@ -88,7 +88,6 @@ const useStyles = makeStyles((theme) => ({
 const Todo = (props) => {
   const { todo, open, onClose, onAdd, onUpdate } = props;
   const [newTodo, setNewTodo] = useState(todo);
-  console.log(todo);
   if (newTodo === {}) {
     setNewTodo({ name: '', description: '' });
   }
@@ -98,7 +97,6 @@ const Todo = (props) => {
       onUpdate(newTodo)();
       onClose();
     } else {
-      console.log(newTodo);
       onAdd(newTodo)();
       onClose();
     }

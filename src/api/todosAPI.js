@@ -1,8 +1,5 @@
 import axios from 'axios';
-axios.interceptors.request.use(request => {
-  console.log(request);
-  return request;
-})
+
 export const getTodos = async (url) => {
   return axios.get(url)
     .catch(error => console.log(error))

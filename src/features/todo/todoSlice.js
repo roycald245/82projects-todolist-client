@@ -51,7 +51,8 @@ export const fetchTodos = (url) => async dispatch => {
 export const addTodo = (url, todo) => async dispatch => {
   try {
     postTodo(url, todo).then(() => getTodos(url)
-      .then((res) => dispatch(setTodos(res.data))));
+      .then((res) => {if (res) dispatch(setTodos(res.data))})
+      .catch(e => console.log(e)));
   } catch (err) {
     dispatch(setError(err));
   }
